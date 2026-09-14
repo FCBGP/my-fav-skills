@@ -10,8 +10,8 @@ This category covers high-performance and out-of-core dataframes, chunked arrays
 
 **Use it when** you need fast, memory-efficient data manipulation of large tabular data — expression-based, lazy, or streaming — especially as an alternative to pandas.
 
-**Example scenario.** A data analyst wants to process a large CSV quickly:
-> "Load this **2M-row sales CSV** with **polars**, do lazy expression-based filtering and aggregation, and compute the per-region totals in parallel."
+**Example scenario.** A network researcher wants to process a large routing-table CSV quickly:
+> "Load this **2M-row BGP routing-table CSV** with **polars**, do lazy expression-based filtering and aggregation, and compute the per-AS totals in parallel."
 
 ---
 
@@ -22,7 +22,7 @@ This category covers high-performance and out-of-core dataframes, chunked arrays
 **Use it when** you need to scale existing pandas/NumPy beyond memory or across clusters. (For out-of-core analytics on a single machine use `vaex`; for in-memory speed use `polars`.)
 
 **Example scenario.** A lab wants to analyze a dataset that exceeds RAM:
-> "Use **dask** to run this pandas workflow on a **20GB dataset** across my cluster — parallel file reads and distributed aggregation."
+> "Use **dask** to run this pandas workflow on a **20GB BGP/Routing dataset** across my cluster — parallel file reads and distributed aggregation."
 
 ---
 
@@ -32,8 +32,8 @@ This category covers high-performance and out-of-core dataframes, chunked arrays
 
 **Use it when** you need to work with huge CSV/HDF5/Arrow/Parquet files, run fast statistics on massive datasets, visualize big data, or build ML pipelines that don't fit in memory.
 
-**Example scenario.** A researcher wants fast stats on a massive dataset:
-> "Use **vaex** to compute **summary statistics on this 5B-row genomics dataset** out-of-core, and produce quick visualizations without loading it into memory."
+**Example scenario.** A network researcher wants fast stats on a massive dataset:
+> "Use **vaex** to compute **summary statistics on this 5B-row network-traffic dataset** out-of-core, and produce quick visualizations without loading it into memory."
 
 ---
 
@@ -43,8 +43,8 @@ This category covers high-performance and out-of-core dataframes, chunked arrays
 
 **Use it when** you need chunked, compressed arrays for cloud-scale scientific data that must be accessed in parallel.
 
-**Example scenario.** A climate scientist wants to store and stream a huge simulation output:
-> "Use **zarr-python** to store this **CMIP climate simulation** as chunked compressed arrays on S3, and stream it in parallel with Dask."
+**Example scenario.** A network researcher wants to store and stream a huge simulation output:
+> "Use **zarr-python** to store this **BGP network simulation** as chunked compressed arrays on S3, and stream it in parallel with Dask."
 
 ---
 
@@ -54,8 +54,8 @@ This category covers high-performance and out-of-core dataframes, chunked arrays
 
 **Use it when** you need precise, customizable plots. (For quick statistical plots use `seaborn`; for interactive use `plotly`; for publication-ready multi-panel figures use `scientific-visualization`.)
 
-**Example scenario.** A researcher wants a highly customized plot:
-> "Use **matplotlib** to build a **custom spectrogram plot** with exact axis scaling, color mapping, and annotations, exported to PDF for my paper."
+**Example scenario.** A network researcher wants a highly customized plot:
+> "Use **matplotlib** to build a **custom BGP-announcement timeline plot** with exact axis scaling, color mapping, and annotations, exported to PDF for my paper."
 
 ---
 
@@ -65,8 +65,8 @@ This category covers high-performance and out-of-core dataframes, chunked arrays
 
 **Use it when** you need quick exploration of distributions, relationships, and categorical comparisons with clean defaults.
 
-**Example scenario.** A analyst wants to explore a dataset visually:
-> "Use **seaborn** to make a **pair plot and heatmap** of my survey data — distributions and correlations — for quick EDA."
+**Example scenario.** A network analyst wants to explore a dataset visually:
+> "Use **seaborn** to make a **pair plot and heatmap** of my BGP attribute data — distributions and correlations — for quick exploration."
 
 ---
 
@@ -76,7 +76,7 @@ This category covers high-performance and out-of-core dataframes, chunked arrays
 
 **Use it when** you work with network/graph data structures — social, biological, transportation, or citation networks.
 
-**Example scenario.** A sociologist wants to analyze a collaboration network:
-> "Use **networkx** to build and analyze my co-authorship network — compute **centrality and community structure**, and draw the topology for my paper."
+**Example scenario.** A network researcher wants to analyze an AS topology graph:
+> "Use **networkx** to build and analyze the **BGP/AS graph** — compute **centrality and community structure**, and draw the topology for my paper."
 
 ---

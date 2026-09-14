@@ -1,6 +1,6 @@
 # Scientific Agent Skills
 
-A curated collection of **77** scientific and research skills for any AI agent that supports the open [Agent Skills](https://agentskills.io/) standard. These skills turn your coding agent into a research assistant that can run multi-step scientific workflows — searching the literature, querying public databases, analyzing data, training models, and producing publication-ready figures, papers, and reports.
+A curated collection of **70** scientific and research skills for any AI agent that supports the open [Agent Skills](https://agentskills.io/) standard. These skills turn your coding agent into a research assistant that can run multi-step scientific workflows — searching the literature, querying public databases, analyzing data, training models, and producing publication-ready figures, papers, and reports.
 
 > The agent can already write code with any Python package or call any API. These skills add curated documentation, working examples, and best practices so common research workflows run faster and more reliably.
 
@@ -165,48 +165,50 @@ Once installed, ask your agent to run end-to-end research workflows. A few examp
 
 ### 📚 Systematic Literature Review
 ```
-Search PubMed, arXiv, and bioRxiv via paper-lookup for recent work on CRISPR base
-editing, pull structured experimental details with bgpt-paper-search, synthesize a
-systematic review with literature-review, verify and format references with
-citation-management, and write up the findings with scientific-writing.
+Search arXiv, OpenAlex, and Semantic Scholar via paper-lookup for recent work on BGP
+route hijacking and RPKI deployment, pull structured experimental details with
+bgpt-paper-search, synthesize a systematic review with literature-review, verify and
+format references with citation-management, and write up the findings with
+scientific-writing.
 ```
 **Skills used:** paper-lookup, bgpt-paper-search, literature-review, citation-management, scientific-writing
 
 ### 🔎 Reproducible Database Lookup
 ```
-Use database-lookup to retrieve compound properties from PubChem and ChEMBL, map
-target genes through UniProt and STRING, pull matching studies from
-ClinicalTrials.gov, and report each result with its endpoint and provenance.
+Use database-lookup to retrieve relevant scientific and regulatory data with explicit
+endpoints, and map related findings through the available public databases with
+provenance recorded for every result.
 ```
 **Skills used:** database-lookup
 
 ### 📊 Data Analysis & Reporting
 ```
-Load this large CSV with polars, run exploratory-data-analysis to profile it, choose
-and run the right tests with statistical-analysis, build publication-quality figures
-with scientific-visualization, and export the results to an Excel workbook with xlsx.
+Load this large routing-table CSV with polars, profile the BGP attribute distributions,
+build publication-quality figures with scientific-visualization, and export the results
+to an Excel workbook with xlsx.
 ```
-**Skills used:** polars, exploratory-data-analysis, statistical-analysis, scientific-visualization, xlsx
+**Skills used:** polars, scientific-visualization, xlsx
 
 ### 🤖 Machine Learning Pipeline
 ```
-Train a classifier with scikit-learn (or pytorch-lightning for a neural net), reduce
-dimensionality with umap-learn for visualization, explain predictions with shap, and
-write up methods and results with scientific-writing.
+Train an anomaly detector for BGP route changes with scikit-learn (or pytorch-lightning
+for a neural net), reduce the high-dimensional routing features with umap-learn for
+visualization, explain the predictions with shap, and write up methods and results with
+scientific-writing.
 ```
 **Skills used:** scikit-learn, pytorch-lightning, umap-learn, shap, scientific-writing
 
 ### 📈 Zero-Shot Forecasting
 ```
-Forecast this sensor time series with timesfm-forecasting, cross-check against an
-ARIMA baseline from statsmodels, and visualize forecasts with prediction intervals.
+Forecast this BGP announcement time series with timesfm-forecasting and visualize the
+forecast with prediction intervals.
 ```
-**Skills used:** timesfm-forecasting, statsmodels, scientific-visualization
+**Skills used:** timesfm-forecasting, scientific-visualization
 
 ### 📄 Paper Reproduction
 ```
-Reproduce the experiments in this paper PDF with paper-reproduction-flow, and write
-up the results as a Chinese research report with research-report-word.
+Reproduce the experiments in this BGP security paper PDF with paper-reproduction-flow,
+and write up the results as a Chinese research report with research-report-word.
 ```
 **Skills used:** paper-reproduction-flow, research-report-word
 
@@ -224,18 +226,16 @@ Hands-on guides with a **use-case scenario for every skill**, organized by categ
 | 04 | 📄 Documents | [tutorials/04-documents.md](tutorials/04-documents.md) |
 | 05 | 🎨 Presentations & Visuals | [tutorials/05-presentations.md](tutorials/05-presentations.md) |
 | 06 | 📊 Data Processing & Visualization | [tutorials/06-data-processing.md](tutorials/06-data-processing.md) |
-| 07 | 📐 Statistics & Experimental Design | [tutorials/07-statistics.md](tutorials/07-statistics.md) |
-| 08 | 🤖 Machine Learning & AI | [tutorials/08-machine-learning.md](tutorials/08-machine-learning.md) |
-| 09 | 🌍 Geospatial Science | [tutorials/09-geospatial.md](tutorials/09-geospatial.md) |
-| 10 | 🧮 Simulation & Mathematics | [tutorials/10-simulation-math.md](tutorials/10-simulation-math.md) |
-| 11 | ⚙️ Infrastructure & Platforms | [tutorials/11-infrastructure.md](tutorials/11-infrastructure.md) |
-| 12 | 🎓 Research Methodology & Ideation | [tutorials/12-research-methodology.md](tutorials/12-research-methodology.md) |
+| 07 | 🤖 Machine Learning & AI | [tutorials/08-machine-learning.md](tutorials/08-machine-learning.md) |
+| 08 | 🧮 Simulation & Mathematics | [tutorials/10-simulation-math.md](tutorials/10-simulation-math.md) |
+| 09 | ⚙️ Infrastructure & Platforms | [tutorials/11-infrastructure.md](tutorials/11-infrastructure.md) |
+| 10 | 🎓 Research Methodology & Ideation | [tutorials/12-research-methodology.md](tutorials/12-research-methodology.md) |
 
 ---
 
 ## 📚 Available Skills
 
-This repository contains **77 skills**. The listings below are *explicitly defined* skills — curated with documentation, examples, and best practices. They are not a ceiling: your agent can install and use any Python package or call any API even without a dedicated skill; these simply make common workflows faster and more dependable.
+This repository contains **70 skills**. The listings below are *explicitly defined* skills — curated with documentation, examples, and best practices. They are not a ceiling: your agent can install and use any Python package or call any API even without a dedicated skill; these simply make common workflows faster and more dependable.
 
 ### 🗄️ Databases & Data Access (2)
 - **database-lookup** — Deterministic REST access to 78 public scientific, biomedical, materials, regulatory, finance, and demographics databases (PubChem, ChEMBL, UniProt, PDB, AlphaFold, KEGG, Reactome, STRING, ClinVar, COSMIC, ClinicalTrials.gov, FDA, FRED, USPTO, SEC EDGAR, and more) with explicit filters, pagination, and provenance.
@@ -289,13 +289,6 @@ This repository contains **77 skills**. The listings below are *explicitly defin
 - **seaborn** — Statistical visualization with attractive defaults and pandas integration.
 - **networkx** — Create, analyze, and visualize graphs and complex networks.
 
-### 📐 Statistics & Experimental Design (5)
-- **statistical-analysis** — Guided test selection, assumption checking, and APA-formatted reporting.
-- **statistical-power** — A priori sample-size and power calculations (closed-form and simulation-based).
-- **experimental-design** — Design studies before data collection (randomization, blocking, factorial/DOE, crossover, sequential).
-- **exploratory-data-analysis** — Automated EDA across 200+ scientific file formats with quality metrics.
-- **statsmodels** — Rigorous statistical models (OLS, GLM, mixed models, ARIMA) with diagnostics and inference.
-
 ### 🤖 Machine Learning & AI (12)
 - **scikit-learn** — Classical supervised/unsupervised learning, model evaluation, and pipelines.
 - **pytorch-lightning** — Organized, scalable neural-network training (multi-GPU, DDP/FSDP/DeepSpeed).
@@ -309,10 +302,6 @@ This repository contains **77 skills**. The listings below are *explicitly defin
 - **timesfm-forecasting** — Zero-shot univariate forecasting with Google's TimesFM foundation model.
 - **stable-baselines3** — Production-ready RL algorithms with a scikit-learn-like API.
 - **pufferlib** — High-performance, vectorized RL for fast parallel and multi-agent training.
-
-### 🌍 Geospatial Science (2)
-- **geomaster** — Remote sensing, GIS, spatial analysis, and Earth-observation ML (Sentinel/Landsat/MODIS/SAR, STAC/COG, 500+ examples).
-- **geopandas** — Vector geospatial data: spatial joins, overlays, reprojection, and choropleth mapping.
 
 ### 🧮 Simulation & Mathematics (3)
 - **simpy** — Process-based discrete-event simulation (queues, resources, logistics).

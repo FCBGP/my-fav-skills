@@ -11,7 +11,7 @@ This category covers the research lifecycle — ideating, forming hypotheses, te
 **Use it when** you need open-ended ideation or to explore research gaps. (For formulating testable hypotheses from data, use `hypothesis-generation`.)
 
 **Example scenario.** A PI wants to explore new directions:
-> "Use **scientific-brainstorming** to brainstorm **open questions in RNA therapeutics** — explore interdisciplinary connections and identify research gaps for my next proposal."
+> "Use **scientific-brainstorming** to brainstorm **open questions in BGP security** — explore interdisciplinary connections and identify research gaps for my next proposal."
 
 ---
 
@@ -21,8 +21,8 @@ This category covers the research lifecycle — ideating, forming hypotheses, te
 
 **Use it when** you have experimental observations/data and need to formulate testable hypotheses with predictions and mechanisms. (For open-ended ideation, use `scientific-brainstorming`; for automated LLM-driven hypothesis testing on datasets, use `hypogenic`.)
 
-**Example scenario.** A researcher with pilot data wants formal hypotheses:
-> "Use **hypothesis-generation** to formulate **testable hypotheses** from my pilot data — with predictions, proposed mechanisms, and experiments to test them."
+**Example scenario.** A researcher with pilot BGP data wants formal hypotheses:
+> "Use **hypothesis-generation** to formulate **testable hypotheses** from my BGP hijack pilot data — with predictions, proposed mechanisms, and experiments to test them."
 
 ---
 
@@ -32,8 +32,8 @@ This category covers the research lifecycle — ideating, forming hypotheses, te
 
 **Use it when** you want to systematically explore hypotheses about patterns in empirical data. (For manual formulation use `hypothesis-generation`; for creative ideation use `scientific-brainstorming`.)
 
-**Example scenario.** A social-science researcher wants to explore patterns in survey data:
-> "Use **hypogenic** to **systematically generate and test hypotheses** about patterns in my survey dataset — combining literature insights with data-driven testing."
+**Example scenario.** A network researcher wants to explore patterns in routing data:
+> "Use **hypogenic** to **systematically generate and test hypotheses** about patterns in my BGP dataset — combining literature insights with data-driven testing."
 
 ---
 
@@ -44,7 +44,7 @@ This category covers the research lifecycle — ideating, forming hypotheses, te
 **Use it when** you need to assess evidence quality, identify flaws in a design, or apply an evidence-grading framework. (For formal peer review writing, use `peer-review`.)
 
 **Example scenario.** A reviewer wants to assess a claim's evidence:
-> "Use **scientific-critical-thinking** to evaluate this **clinical claim's evidence quality** — check the experimental design for bias and apply the **GRADE** framework."
+> "Use **scientific-critical-thinking** to evaluate this **BGP security claim's evidence quality** — check the experimental design for bias and apply the **GRADE** framework."
 
 ---
 
@@ -55,7 +55,7 @@ This category covers the research lifecycle — ideating, forming hypotheses, te
 **Use it when** you want diverse viewpoints, help making a tough decision, a council/panel/board discussion, or devil's-advocate analysis — "what would different experts think", "think through this from all sides", "council mode".
 
 **Example scenario.** A decision-maker facing a complex choice wants multiple perspectives:
-> "Use **consciousness-council** to deliberate on whether to pursue **therapy A or B** for my patient cohort — I want a council of diverse experts and a devil's advocate."
+> "Use **consciousness-council** to deliberate on whether to adopt **RPKI or BGPsec** for my routing security strategy — I want a council of diverse experts and a devil's advocate."
 
 ---
 
@@ -65,8 +65,8 @@ This category covers the research lifecycle — ideating, forming hypotheses, te
 
 **Use it when** you face speculative what-if questions, strategic forks, or need to stress-test a decision before committing.
 
-**Example scenario.** A strategist wants to stress-test a launch decision:
-> "Use **what-if-oracle** to explore the **best, likely, worst, and wild-card scenarios** for launching my new product — testing the decision before I commit."
+**Example scenario.** A strategist wants to stress-test a deployment decision:
+> "Use **what-if-oracle** to explore the **best, likely, worst, and wild-card scenarios** for deploying my BGP-hijack defense — testing the decision before I commit."
 
 ---
 
@@ -77,7 +77,7 @@ This category covers the research lifecycle — ideating, forming hypotheses, te
 **Use it when** you want to iteratively optimize something over many experiments — "get my model's eval score up", "improve this agent/harness", "tune this pipeline", "beat the baseline on this benchmark", "run a search over approaches and keep the best", "do an MLE-bench / Kaggle-style optimization".
 
 **Example scenario.** A researcher wants to beat a benchmark on an eval:
-> "Use **arbor** to iteratively optimize my pipeline to **beat the baseline on this benchmark** — run many experiments with Hypothesis Tree Refinement and keep the best, without overfitting to the dev set."
+> "Use **arbor** to iteratively optimize my BGP-anomaly-detector to **beat the baseline on this benchmark** — run many experiments with Hypothesis Tree Refinement and keep the best, without overfitting to the dev set."
 
 ---
 
@@ -87,8 +87,8 @@ This category covers the research lifecycle — ideating, forming hypotheses, te
 
 **Use it when** you need a competitive grant proposal with agency-specific formatting and review-criteria alignment.
 
-**Example scenario.** A researcher wants a competitive NIH proposal:
-> "Use **research-grants** to draft my **NIH R01 proposal** — with significance statements, innovation narrative, budget preparation, and compliance with NIH review criteria."
+**Example scenario.** A researcher wants a competitive proposal for routing security:
+> "Use **research-grants** to draft my **BGP security proposal** — with significance statements, innovation narrative, budget preparation, and compliance with the agency's review criteria."
 
 ---
 
@@ -99,7 +99,7 @@ This category covers the research lifecycle — ideating, forming hypotheses, te
 **Use it when** you need to organize research materials into notebooks, ingest diverse content, generate AI summaries/podcasts, or chat with documents.
 
 **Example scenario.** A researcher wants to organize a literature corpus into notebooks:
-> "Use **open-notebook** to ingest my **PDFs, web pages, and videos** into research notebooks — generate AI notes and summaries, and build a multi-speaker podcast from my findings."
+> "Use **open-notebook** to ingest my **BGP PDFs, web pages, and videos** into research notebooks — generate AI notes and summaries, and build a multi-speaker podcast from my findings."
 
 ---
 

@@ -10,8 +10,8 @@ Both skills give your agent reproducible access to scientific and ML data. Use t
 
 **Use it when** you need a reproducible lookup of a compound, gene, protein, pathway, variant, clinical trial, patent, economic indicator, structure, astronomy object, or database-backed scientific fact — where the endpoint, filter, and provenance must be explicit and verifiable.
 
-**Example scenario.** A pharmacologist wants to verify drug-target interactions:
-> "Look up **ChEMBL** for the target **dopamine receptor D3** and retrieve the bioactivity endpoints (IC50, Ki), then cross-check the gene in **UniProt** and the pathway in **KEGG**. Report each result with its endpoint and provenance so I can cite them."
+**Example scenario.** A network researcher wants reproducible, citable lookups for a BGP security study:
+> "Look up the relevant **public database** for the network/security data I need, retrieve the records with explicit filters, and report each result with its endpoint and provenance so I can cite them."
 
 **Why it's reliable.** Because it makes deterministic REST calls with explicit endpoints and pagination, the results are reproducible and traceable — ideal for work you'll include in a paper or report.
 
@@ -23,8 +23,8 @@ Both skills give your agent reproducible access to scientific and ML data. Use t
 
 **Use it when** you're doing AI/ML work in a scientific domain and need to discover or use a dataset, model, or demo Space.
 
-**Example scenario.** A materials scientist wants a pretrained model for property prediction:
-> "Use **hugging-science** to find a Hugging Face dataset and pretrained model for **electrochemical property prediction**, load it with `datasets`/`transformers`, and run a quick inference example via the HF Inference API."
+**Example scenario.** A BGP-security researcher wants a dataset or model for anomaly detection:
+> "Use **hugging-science** to find a Hugging Face dataset and pretrained model for **network/routing anomaly detection**, load it with `datasets`/`transformers`, and run a quick inference example via the HF Inference API."
 
 **Why it's useful.** It shortens the hunt for domain-specific ML resources — one skill to find datasets, models, and demos instead of searching the Hub manually.
 

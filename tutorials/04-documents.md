@@ -10,8 +10,8 @@ This category covers working with office document formats — PDFs, Word, PowerP
 
 **Use it when** you need to do anything with a `.pdf` file — read it, merge/split it, fill a form, or make a scanned PDF searchable.
 
-**Example scenario.** An analyst needs to consolidate several reports:
-> "Merge these **10 quarterly PDF reports** into one, split out the appendix pages, and OCR the scanned ones so they're searchable."
+**Example scenario.** A network researcher needs to consolidate several reports:
+> "Merge these **10 quarterly BGP project PDF reports** into one, split out the appendix pages, and OCR the scanned ones so they're searchable."
 
 ---
 
@@ -21,8 +21,8 @@ This category covers working with office document formats — PDFs, Word, PowerP
 
 **Use it when** you need a Word deliverable — a report, memo, letter, template, or any formatted `.docx` document.
 
-**Example scenario.** A consultant needs a polished client memo:
-> "Use **docx** to create a formatted **client memorandum** with a table of contents, headings, and page numbers from my draft outline."
+**Example scenario.** A consultant needs a polished technical report:
+> "Use **docx** to create a formatted **BGP security report** with a table of contents, headings, and page numbers from my draft outline."
 
 ---
 
@@ -32,8 +32,8 @@ This category covers working with office document formats — PDFs, Word, PowerP
 
 **Use it when** any `.pptx` file is involved — as input, output, or both — or you need to make or modify a slide deck.
 
-**Example scenario.** A program manager wants to update a quarterly deck:
-> "Use **pptx** to edit my quarterly review deck — update the revenue slide, split the appendix into a separate deck, and add speaker notes."
+**Example scenario.** A project lead wants to update a quarterly deck:
+> "Use **pptx** to edit my quarterly BGP project review deck — update the progress slide, split the appendix into a separate deck, and add speaker notes."
 
 ---
 
@@ -43,8 +43,8 @@ This category covers working with office document formats — PDFs, Word, PowerP
 
 **Use it when** the deliverable is an Excel workbook, or you need a CSV cleaned into spreadsheet form.
 
-**Example scenario.** A finance team wants a model built from raw data:
-> "Use **xlsx** to build a **multi-sheet financial model** from this raw revenue data — one sheet for inputs, one for calculations, one for the executive summary, with formulas."
+**Example scenario.** A network research team wants a model built from raw data:
+> "Use **xlsx** to build a **multi-sheet BGP routing model** from this raw table data — one sheet for inputs, one for calculations, one for the executive summary, with formulas."
 
 ---
 
@@ -54,8 +54,8 @@ This category covers working with office document formats — PDFs, Word, PowerP
 
 **Use it when** you need content from a document converted into Markdown for use by an agent or in a RAG pipeline.
 
-**Example scenario.** A knowledge-base builder wants to ingest documents:
-> "Convert this **PPTX** and **DOCX** into Markdown via **markitdown** so I can feed them into my RAG pipeline for retrieval."
+**Example scenario.** A knowledge-base builder wants to ingest BGP literature:
+> "Convert this **PPTX** and **DOCX** of BGP materials into Markdown via **markitdown** so I can feed them into my RAG pipeline for retrieval."
 
 ---
 
@@ -66,7 +66,7 @@ This category covers working with office document formats — PDFs, Word, PowerP
 **Use it when** you need bounding boxes, fast local parsing, PNG page renders, or layout-preserved JSON — prefer it over MarkItDown for these cases, and over the `pdf` skill for merge/split/forms.
 
 **Example scenario.** A multimodal agent workflow wants page-level structure:
-> "Use **liteparse** to parse this paper folder — OCR the scans, return **layout-preserved JSON with bounding boxes** for each page, and render page PNGs."
+> "Use **liteparse** to parse this BGP-paper folder — OCR the scans, return **layout-preserved JSON with bounding boxes** for each page, and render page PNGs."
 
 ---
 
@@ -76,8 +76,8 @@ This category covers working with office document formats — PDFs, Word, PowerP
 
 **Use it when** you're writing or revising a Chinese `调研报告` Markdown, merging new content, fixing references, or converting Markdown to Word in the project's fixed format.
 
-**Example scenario.** A research assistant needs a standardized Chinese report:
-> "Use **report-word-format** to write my Chinese 调研报告 in the fixed heading/numbering/caption format, then convert it to a Word document."
+**Example scenario.** A research assistant needs a standardized Chinese BGP report:
+> "Use **report-word-format** to write my Chinese 调研报告 on BGP security in the fixed heading/numbering/caption format, then convert it to a Word document."
 
 ---
 
@@ -87,8 +87,8 @@ This category covers working with office document formats — PDFs, Word, PowerP
 
 **Use it when** you're producing a Chinese research report Word document and want the standardized structure — headings, captions, bibliography numbering, three-line tables, and inline-code fonts.
 
-**Example scenario.** A student wants a thesis-style 调研报告 Word file:
-> "Use **research-report-word-skill** to convert my research report Markdown into a **Word document** with the correct heading levels, numbered bibliography, and three-line tables."
+**Example scenario.** A student wants a thesis-style BGP 调研报告 Word file:
+> "Use **research-report-word-skill** to convert my BGP research report Markdown into a **Word document** with the correct heading levels, numbered bibliography, and three-line tables."
 
 > 💡 **Note:** `report-word-format` and `research-report-word-skill` are near-duplicates (same `research-report-word` skill name). Prefer one consistently; if both exist, `research-report-word-skill` adds `WRITING_SPEC.md`.
 

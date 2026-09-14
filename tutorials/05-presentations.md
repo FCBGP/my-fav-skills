@@ -11,7 +11,7 @@ This category covers making slides, posters, diagrams, infographics, and AI-gene
 **Use it when** you need PowerPoint slides for a conference, seminar, research talk, thesis defense, or any scientific talk.
 
 **Example scenario.** A PhD student preparing a defense:
-> "Use **scientific-slides** to build my thesis defense deck — outline the talk, set timing, and validate the visual design across PowerPoint and Beamer."
+> "Use **scientific-slides** to build my thesis defense deck on BGP security — outline the talk, set timing, and validate the visual design across PowerPoint and Beamer."
 
 ---
 
@@ -22,7 +22,7 @@ This category covers making slides, posters, diagrams, infographics, and AI-gene
 **Use it when** you need a standard academic/conference poster (use `pptx-posters` only when the user explicitly wants PowerPoint/PPTX poster format).
 
 **Example scenario.** A conference attendee wants a poster:
-> "Use **latex-posters** to create a **conference research poster** for my cytometry study using beamerposter, with a multi-column layout and integrated figures."
+> "Use **latex-posters** to create a **conference research poster** for my BGP route-hijacking study using beamerposter, with a multi-column layout and integrated figures."
 
 ---
 
@@ -33,7 +33,7 @@ This category covers making slides, posters, diagrams, infographics, and AI-gene
 **Use it when** the user explicitly requests a **PowerPoint/PPTX poster** format (not a standard LaTeX poster).
 
 **Example scenario.** An event organizer needs a poster in PPTX:
-> "Use **pptx-posters** to make a **PowerPoint poster** for my lab's demo — export it to PPTX with a responsive layout."
+> "Use **pptx-posters** to make a **PowerPoint poster** for my lab's BGP demo — export it to PPTX with a responsive layout."
 
 ---
 
@@ -43,8 +43,8 @@ This category covers making slides, posters, diagrams, infographics, and AI-gene
 
 **Use it when** you need a technical diagram — a neural net architecture, a pathway, a flowchart, or a system diagram — not a generic illustration.
 
-**Example scenario.** A ML researcher wants a model-architecture figure for a paper:
-> "Use **scientific-schematics** to generate a publication-quality **diagram of my transformer architecture** for my paper, with iterative refinement until it meets journal quality."
+**Example scenario.** A network researcher wants a system-architecture figure for a paper:
+> "Use **scientific-schematics** to generate a publication-quality **diagram of my BGP/RPKI security architecture** for my paper, with iterative refinement until it meets journal quality."
 
 ---
 
@@ -54,8 +54,8 @@ This category covers making slides, posters, diagrams, infographics, and AI-gene
 
 **Use it when** you're creating journal-submission figures that need multi-panel layouts, significance annotation, and journal styling.
 
-**Example scenario.** A researcher preparing a Nature submission wants journal-ready figures:
-> "Use **scientific-visualization** to make the **multi-panel figures for my paper** — with error bars, significance annotations, and a colorblind-safe palette, formatted for Nature."
+**Example scenario.** A researcher preparing a networking submission wants journal-ready figures:
+> "Use **scientific-visualization** to make the **multi-panel figures for my BGP paper** — with significance annotations and a colorblind-safe palette, formatted for the journal."
 
 ---
 
@@ -65,8 +65,8 @@ This category covers making slides, posters, diagrams, infographics, and AI-gene
 
 **Use it when** you're creating any scientific document, report, analysis, or visualization that benefits from text-based diagrams (Mermaid).
 
-**Example scenario.** A data scientist documenting a pipeline wants clean diagrams:
-> "Use **markdown-mermaid-writing** to write my pipeline documentation with **Mermaid flowcharts and architecture diagrams**, following the style guide."
+**Example scenario.** A data scientist documenting a BGP analysis pipeline wants clean diagrams:
+> "Use **markdown-mermaid-writing** to write my BGP analysis pipeline documentation with **Mermaid flowcharts and architecture diagrams**, following the style guide."
 
 ---
 
@@ -77,7 +77,7 @@ This category covers making slides, posters, diagrams, infographics, and AI-gene
 **Use it when** you need a polished infographic for a topic, with accurate data and a style appropriate to the industry.
 
 **Example scenario.** A communications team wants a data-rich infographic:
-> "Use **infographics** to create an infographic on **global vaccine coverage trends** — research the latest data, pick an industry style, and refine until it's clean."
+> "Use **infographics** to create an infographic on **global BGP hijacking trends** — research the latest data, pick an industry style, and refine until it's clean."
 
 ---
 
@@ -88,7 +88,7 @@ This category covers making slides, posters, diagrams, infographics, and AI-gene
 **Use it when** you need a general-purpose image — a cover illustration, concept art, or visual asset — not a flowchart or schematic (use `scientific-schematics` for those).
 
 **Example scenario.** A project lead wants a cover illustration:
-> "Use **generate-image** to create a **cover illustration** for my research proposal on drug discovery, in a clean scientific style."
+> "Use **generate-image** to create a **cover illustration** for my research proposal on BGP security, in a clean scientific style."
 
 ---
 
@@ -98,8 +98,8 @@ This category covers making slides, posters, diagrams, infographics, and AI-gene
 
 **Use it when** you need to create a presentation from source material — "create PPT", "make presentation", "生成PPT", "做PPT", "制作演示文稿" — or when the user mentions ppt-master.
 
-**Example scenario.** A manager wants a deck built from an existing document:
-> "Use **ppt-master** to turn this research report Markdown into a **high-quality PPTX deck** — generate SVG pages first, then export to PowerPoint."
+**Example scenario.** A project lead wants a deck built from an existing document:
+> "Use **ppt-master** to turn this BGP research report Markdown into a **high-quality PPTX deck** — generate SVG pages first, then export to PowerPoint."
 
 ---
 
@@ -109,7 +109,7 @@ This category covers making slides, posters, diagrams, infographics, and AI-gene
 
 **Use it when** you need a consulting-grade, argument-driven presentation with evidence traceability and a confirmation gate before producing the editable PPTX.
 
-**Example scenario.** A consultant wants a strategy deck with evidence:
-> "Use **cyber-ppt** to turn this business analysis DOCX into a **high-density, consulting-style PPTX** — with a storyline, visual style exploration, and render quality checks before I approve it."
+**Example scenario.** A consultant wants an evidence-driven deck:
+> "Use **cyber-ppt** to turn this BGP incident-analysis DOCX into a **high-density, consulting-style PPTX** — with a storyline, visual style exploration, and render quality checks before I approve it."
 
 ---

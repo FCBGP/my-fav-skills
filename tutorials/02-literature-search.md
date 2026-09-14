@@ -10,8 +10,8 @@ This category covers finding papers, extracting structured experimental data, ru
 
 **Use it when** you need to find papers, look up a DOI/PMID, retrieve abstracts or full text, check open access, search an author, or query citation graphs.
 
-**Example scenario.** A bioinformatics student wants recent studies on a gene:
-> "Find papers on **p53's role in cell-cycle regulation** via **PubMed** and **bioRxiv** using **paper-lookup**, and return the top 10 recent abstracts with their DOIs and open-access status."
+**Example scenario.** A network researcher wants recent studies on a routing-security topic:
+> "Find papers on **BGP route hijacking** via **arXiv** and **OpenAlex** using **paper-lookup**, and return the top 10 recent abstracts with their DOIs and open-access status."
 
 ---
 
@@ -21,8 +21,8 @@ This category covers finding papers, extracting structured experimental data, ru
 
 **Use it when** you need experimental details that aren't in an abstract — e.g. sample sizes, assay conditions, or numerical results — for evidence synthesis or a systematic review.
 
-**Example scenario.** A clinician meta-analyzing trial outcomes wants precise numbers from each study:
-> "Use **bgpt-paper-search** on these trial papers and extract the **sample size, primary endpoint values, and quality score** for each, so I can build a comparison table."
+**Example scenario.** A researcher meta-analyzing BGP-security experiments wants precise numbers from each study:
+> "Use **bgpt-paper-search** on these BGP papers and extract the **experimental setup, measured detection metrics, and quality score** for each, so I can build a comparison table."
 
 ---
 
@@ -33,7 +33,7 @@ This category covers finding papers, extracting structured experimental data, ru
 **Use it when** you need a systematic review, meta-analysis, research synthesis, or a comprehensive literature search.
 
 **Example scenario.** A PhD candidate preparing a dissertation chapter needs a structured review:
-> "Run a **systematic literature review** on **CRISPR base editing safety** across PubMed and bioRxiv, and produce a formatted Markdown document with an APA citation list."
+> "Run a **systematic literature review** on **BGP security (RPKI and BGPsec)** across arXiv and OpenAlex, and produce a formatted Markdown document with an APA citation list."
 
 ---
 
@@ -43,8 +43,8 @@ This category covers finding papers, extracting structured experimental data, ru
 
 **Use it when** you need to find papers, verify citation info, convert a DOI to BibTeX, or clean up references in a manuscript.
 
-**Example scenario.** An author finalizing a paper wants accurate references:
-> "Verify the citations in my manuscript bibliography against Google Scholar and PubMed, convert any DOI to proper **BibTeX**, and flag any that are outdated or incorrectly formatted."
+**Example scenario.** An author finalizing a BGP paper wants accurate references:
+> "Verify the citations in my BGP manuscript bibliography against Google Scholar and arXiv, convert any DOI to proper **BibTeX**, and flag any that are outdated or incorrectly formatted."
 
 ---
 
@@ -54,8 +54,8 @@ This category covers finding papers, extracting structured experimental data, ru
 
 **Use it when** you need to manage a Zotero library programmatically, export citations, upload PDF attachments, or build automation that integrates with Zotero.
 
-**Example scenario.** A researcher wants to automate their reference library:
-> "Sync my Zotero collection with my manuscript's reference list — fetch items for each cited paper, verify tags, and upload the PDF attachments I'm missing."
+**Example scenario.** A BGP researcher wants to automate their reference library:
+> "Sync my Zotero collection with my BGP manuscript's reference list — fetch items for each cited paper, verify tags, and upload the PDF attachments I'm missing."
 
 ---
 
@@ -65,8 +65,8 @@ This category covers finding papers, extracting structured experimental data, ru
 
 **Use it when** you want recent project recommendations, canonical paper details, or a feed export.
 
-**Example scenario.** A scientist exploring a field wants a curated starting point:
-> "Use **paperzilla** to recommend recent projects and canonical papers in **single-cell genomics**, and give me a markdown summary plus an Atom feed URL for updates."
+**Example scenario.** A network scientist exploring a field wants a curated starting point:
+> "Use **paperzilla** to recommend recent projects and canonical papers in **interdomain routing and BGP security**, and give me a markdown summary plus an Atom feed URL for updates."
 
 ---
 
@@ -77,7 +77,7 @@ This category covers finding papers, extracting structured experimental data, ru
 **Use it when** you need high-quality web search or scholarly filtering, or to extract content from URLs/PDFs.
 
 **Example scenario.** A reviewer wants to check a claim against the latest technical literature:
-> "Use **exa-search** with `category=research paper` to find recent articles on **quantum error correction**, then fetch and extract the key PDFs."
+> "Use **exa-search** with `category=research paper` to find recent articles on **BGP hijacking mitigation**, then fetch and extract the key PDFs."
 
 ---
 
@@ -88,7 +88,7 @@ This category covers finding papers, extracting structured experimental data, ru
 **Use it when** you need ANY web-related task — lookups, page fetching, dataset enrichment, topic investigation, citation checks, or reviewing scientific literature — even if you don't mention "parallel" or "web" explicitly.
 
 **Example scenario.** A data analyst enriching a bibliography list:
-> "Use **parallel-web** to enrich this CSV of conference papers — add each paper's DOI, publication year, and citation count from the web."
+> "Use **parallel-web** to enrich this CSV of networking conference papers — add each paper's DOI, publication year, and citation count from the web."
 
 ---
 
@@ -99,6 +99,6 @@ This category covers finding papers, extracting structured experimental data, ru
 **Use it when** you need to find papers, gather research data, or verify scientific information — especially when you want the query routed to the best search backend automatically.
 
 **Example scenario.** A grant writer wants the latest evidence to support a claim:
-> "Use **research-lookup** to find the most recent peer-reviewed evidence on **brain-computer interface safety** for my grant narrative, and note which backend it chose."
+> "Use **research-lookup** to find the most recent peer-reviewed evidence on **BGP route hijacking defenses** for my grant narrative, and note which backend it chose."
 
 ---

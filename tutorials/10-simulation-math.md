@@ -10,8 +10,8 @@ This category covers discrete-event simulation, exact symbolic mathematics, and 
 
 **Use it when** you need to simulate a system's behavior over time — queues, resource contention, or process flow.
 
-**Example scenario.** An operations analyst wants to model a production line:
-> "Use **simpy** to simulate my **manufacturing line** — modeling station queues, resource bottlenecks, and throughput over an 8-hour shift."
+**Example scenario.** A network analyst wants to model routing traffic:
+> "Use **simpy** to simulate my **BGP/network traffic** — modeling router queues, resource bottlenecks, and throughput over an observation window."
 
 ---
 
@@ -21,8 +21,8 @@ This category covers discrete-event simulation, exact symbolic mathematics, and 
 
 **Use it when** you need exact symbolic math — symbolic derivatives, integrals, equation solving, or symbolic linear algebra.
 
-**Example scenario.** A physicist wants an exact symbolic solution:
-> "Use **sympy** to derive the **exact symbolic integral** of my governing equation, solve the system symbolically, and export the result as LaTeX."
+**Example scenario.** A network researcher wants an exact symbolic solution:
+> "Use **sympy** to derive the **exact symbolic relation** in my routing metric equation, solve the system symbolically, and export the result as LaTeX."
 
 ---
 
@@ -32,7 +32,7 @@ This category covers discrete-event simulation, exact symbolic mathematics, and 
 
 **Use it when** you need MATLAB/Octave scripts for linear algebra, signal/image processing, differential equations, optimization, statistics, or scientific visualizations.
 
-**Example scenario.** An engineer wants a signal-processing script:
-> "Use **matlab** to write an **Octave script** for spectral analysis of my vibration signal — FFT, filtering, and visualization — and convert the approach to Python."
+**Example scenario.** A network engineer wants a signal-processing script:
+> "Use **matlab** to write an **Octave script** for spectral analysis of my BGP signal — FFT, filtering, and visualization — and convert the approach to Python."
 
 ---

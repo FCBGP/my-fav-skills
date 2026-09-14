@@ -11,7 +11,7 @@ This category covers serverless compute, GPU acceleration, resource detection, a
 **Use it when** you need serverless compute — GPU workloads, model serving, batch jobs, or cloud scaling.
 
 **Example scenario.** A ML team wants to serve a model on demand GPUs:
-> "Use **modal** to deploy my fine-tuned model as a **serverless endpoint** on GPUs — schedule batch inference jobs and scale the containers."
+> "Use **modal** to deploy my BGP-hijack-detection model as a **serverless endpoint** on GPUs — schedule batch inference jobs and scale the containers."
 
 ---
 
@@ -21,8 +21,8 @@ This category covers serverless compute, GPU acceleration, resource detection, a
 
 **Use it when** you see CPU-bound Python (loops, large arrays, ML pipelines, graph analytics, image processing) that would benefit from GPU acceleration — even if not explicitly requested.
 
-**Example scenario.** A data scientist wants to speed up a pandas-heavy pipeline:
-> "Use **optimize-for-gpu** to **GPU-accelerate** my NumPy/pandas preprocessing — using cuDF and RAPIDS to cut the runtime of my ML pipeline."
+**Example scenario.** A network researcher wants to speed up a pandas-heavy pipeline:
+> "Use **optimize-for-gpu** to **GPU-accelerate** my NumPy/pandas preprocessing of BGP tables — using cuDF and RAPIDS to cut the runtime of my ML pipeline."
 
 ---
 
@@ -32,8 +32,8 @@ This category covers serverless compute, GPU acceleration, resource detection, a
 
 **Use it when** you're about to run an analysis, train a model, process large data, or any task where resource constraints matter.
 
-**Example scenario.** A researcher about to train a large model wants to know what's available:
-> "Use **get-available-resources** before I train this model — check CPU, GPU, memory, and disk, and recommend whether to use parallel or GPU acceleration."
+**Example scenario.** A researcher about to process a large BGP dataset wants to know what's available:
+> "Use **get-available-resources** before I analyze this BGP dataset — check CPU, GPU, memory, and disk, and recommend whether to use parallel or GPU acceleration."
 
 ---
 
@@ -43,8 +43,8 @@ This category covers serverless compute, GPU acceleration, resource detection, a
 
 **Use it when** you want to build, use, or extend the Pi coding harness — delegating, MCP servers, interactive forms, or web access.
 
-**Example scenario.** A developer wants to automate tasks in Pi:
-> "Use **pi-agent** to set up **pi-subagents** in my Pi session — delegate a research task and integrate with **pi-web-access** for web search."
+**Example scenario.** A developer wants to automate BGP research tasks in Pi:
+> "Use **pi-agent** to set up **pi-subagents** in my Pi session — delegate a BGP literature task and integrate with **pi-web-access** for web search."
 
 ---
 
@@ -55,6 +55,6 @@ This category covers serverless compute, GPU acceleration, resource detection, a
 **Use it when** you want to analyze recent work and propose skills based on what you actually do. Requires the screenpipe daemon running locally on port 3030 (the skill refuses to run if screenpipe is unreachable).
 
 **Example scenario.** A researcher wants to automate a recurring workflow:
-> "Analyze my recent sessions with **autoskill** — detect my repeated literature-review workflow and draft a new skill or a recipe that chains existing ones."
+> "Analyze my recent sessions with **autoskill** — detect my repeated BGP literature-review workflow and draft a new skill or a recipe that chains existing ones."
 
 ---

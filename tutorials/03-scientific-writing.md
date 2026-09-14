@@ -10,8 +10,8 @@ This category covers writing manuscripts, reviewing work, quantitatively evaluat
 
 **Use it when** you need to write a research paper, thesis chapter, or journal manuscript with proper structure and citations.
 
-**Example scenario.** A postdoc needs to write up a completed experiment:
-> "Use **scientific-writing** to write my Results and Discussion sections in full prose, following IMRAD structure and the **STROBE** reporting guidelines, with citations from my reference manager."
+**Example scenario.** A network researcher needs to write up a completed experiment:
+> "Use **scientific-writing** to write my Results and Discussion sections in full prose, following IMRAD structure and the relevant reporting guidelines, with citations from my reference manager."
 
 ---
 
@@ -21,8 +21,8 @@ This category covers writing manuscripts, reviewing work, quantitatively evaluat
 
 **Use it when** you need to write a formal peer review, assess a manuscript or grant, or provide revision feedback.
 
-**Example scenario.** A journal editor wants a structured review of a submitted clinical trial:
-> "Use **peer-review** to review this RCT manuscript — check methodology, statistical validity, and CONSORT compliance, and give constructive revision feedback."
+**Example scenario.** A journal editor wants a structured review of a submitted BGP-security manuscript:
+> "Use **peer-review** to review this BGP hijack-detection manuscript — check methodology, evaluation validity, and reporting compliance, and give constructive revision feedback."
 
 ---
 
@@ -33,7 +33,7 @@ This category covers writing manuscripts, reviewing work, quantitatively evaluat
 **Use it when** you need a systematic, scored evaluation of a research proposal, manuscript, or body of work.
 
 **Example scenario.** A funding committee wants a scored assessment of proposals:
-> "Use **scholar-evaluation** to score these three grant proposals across problem formulation, methodology, and analysis, with numeric ratings and actionable feedback for each."
+> "Use **scholar-evaluation** to score these three BGP-security grant proposals across problem formulation, methodology, and analysis, with numeric ratings and actionable feedback for each."
 
 ---
 
@@ -43,7 +43,7 @@ This category covers writing manuscripts, reviewing work, quantitatively evaluat
 
 **Use it when** you're preparing a manuscript, conference paper, poster, or grant proposal and need venue-specific formatting and templates.
 
-**Example scenario.** A researcher submitting to NeurIPS wants the right template:
-> "Use **venue-templates** to get the **NeurIPS** LaTeX template and formatting requirements for my conference paper, and prepare the submission skeleton."
+**Example scenario.** A researcher submitting to a networking venue wants the right template:
+> "Use **venue-templates** to get the **ACM SIGCOMM** LaTeX template and formatting requirements for my BGP paper, and prepare the submission skeleton."
 
 ---

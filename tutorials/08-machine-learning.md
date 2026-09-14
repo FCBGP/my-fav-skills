@@ -10,8 +10,8 @@ This category covers classical ML, deep learning, transformers, model interpreta
 
 **Use it when** you need classical ML — a classifier, regressor, clustering, or a full pipeline with evaluation and tuning.
 
-**Example scenario.** A data analyst wants a predictive model:
-> "Use **scikit-learn** to build a **classifier for loan default** — preprocess the features, train a random forest, evaluate with cross-validation, and tune the hyperparameters."
+**Example scenario.** A network researcher wants a predictive model:
+> "Use **scikit-learn** to build a **classifier for BGP anomaly detection** — preprocess the routing features, train a random forest, evaluate with cross-validation, and tune the hyperparameters."
 
 ---
 
@@ -22,7 +22,7 @@ This category covers classical ML, deep learning, transformers, model interpreta
 **Use it when** you need scalable, organized neural-network training — multi-GPU, distributed, or with rich logging.
 
 **Example scenario.** A deep-learning researcher wants scalable training:
-> "Use **pytorch-lightning** to train a **vision transformer** with a LightningModule — multi-GPU DDP, TensorBoard logging, and a clean data pipeline."
+> "Use **pytorch-lightning** to train a **graph transformer on BGP data** with a LightningModule — multi-GPU DDP, TensorBoard logging, and a clean data pipeline."
 
 ---
 
@@ -32,8 +32,8 @@ This category covers classical ML, deep learning, transformers, model interpreta
 
 **Use it when** you work with AutoModel, pipelines, tokenizers, or TrainingArguments — fine-tuning a pretrained model or running inference.
 
-**Example scenario.** An NLP engineer wants to fine-tune a model:
-> "Use **transformers** to load a pretrained **BERT** model, fine-tune it with Trainer on my sentiment dataset, and run pipeline inference on new text."
+**Example scenario.** A network engineer wants to fine-tune a model:
+> "Use **transformers** to load a pretrained **BERT** model, fine-tune it with Trainer on my BGP/RFC text dataset, and run pipeline inference on new text."
 
 ---
 
@@ -44,7 +44,7 @@ This category covers classical ML, deep learning, transformers, model interpreta
 **Use it when** you need to explain model predictions, compute feature importance, or debug/bias-check a model.
 
 **Example scenario.** A ML team wants to explain a model's decisions:
-> "Use **shap** to explain my credit-model's predictions — generate **beeswarm and waterfall plots** showing which features drove each decision."
+> "Use **shap** to explain my BGP-hijack-detection model's predictions — generate **beeswarm and waterfall plots** showing which routing features drove each decision."
 
 ---
 
@@ -54,8 +54,8 @@ This category covers classical ML, deep learning, transformers, model interpreta
 
 **Use it when** you need to reduce high-dimensional data for visualization, clustering preprocessing, or embedding workflows.
 
-**Example scenario.** A genomics researcher wants to visualize high-dimensional data:
-> "Use **umap-learn** to project my **single-cell expression data** into 2D — reducing dimensionality for clustering and a scatter visualization."
+**Example scenario.** A network researcher wants to visualize high-dimensional data:
+> "Use **umap-learn** to project my **high-dimensional BGP feature data** into 2D — reducing dimensionality for clustering and a scatter visualization."
 
 ---
 
@@ -66,7 +66,7 @@ This category covers classical ML, deep learning, transformers, model interpreta
 **Use it when** you work with `torch_geometric` for graph models — not for general NetworkX analytics or non-graph PyTorch models.
 
 **Example scenario.** A graph-ML researcher wants to classify nodes in a network:
-> "Use **torch-geometric** to train a **GAT** on my protein-interaction graph — node classification with message passing and neighbor sampling."
+> "Use **torch-geometric** to train a **GAT** on my AS/BGP routing graph — node classification with message passing and neighbor sampling."
 
 ---
 
@@ -76,8 +76,8 @@ This category covers classical ML, deep learning, transformers, model interpreta
 
 **Use it when** you need Bayesian modeling — uncertainty quantification, hierarchical structure, or probabilistic inference.
 
-**Example scenario.** An epidemiologist wants Bayesian inference on an outbreak:
-> "Use **pymc** to build a **hierarchical Bayesian model** for my infection-rate data — fit with NUTS MCMC and compare candidate models with WAIC."
+**Example scenario.** A network researcher wants Bayesian inference on an incident:
+> "Use **pymc** to build a **hierarchical Bayesian model** for my BGP-hijack frequency data — fit with NUTS MCMC and compare candidate models with WAIC."
 
 ---
 
@@ -87,8 +87,8 @@ This category covers classical ML, deep learning, transformers, model interpreta
 
 **Use it when** you face multi-objective trade-offs — conflicting objectives, Pareto fronts, or constrained design optimization.
 
-**Example scenario.** An engineer wants to optimize conflicting objectives:
-> "Use **pymoo** to run **NSGA-II** on my truss design — minimize cost and weight simultaneously, and show the **Pareto front**."
+**Example scenario.** A network engineer wants to optimize conflicting objectives:
+> "Use **pymoo** to run **NSGA-II** on my BGP route-selection design — minimize latency and path-length simultaneously, and show the **Pareto front**."
 
 ---
 
@@ -98,8 +98,8 @@ This category covers classical ML, deep learning, transformers, model interpreta
 
 **Use it when** you work with temporal data, sequential patterns, or time-indexed observations requiring specialized algorithms beyond standard ML.
 
-**Example scenario.** A biologist wants to classify biosignals over time:
-> "Use **aeon** to **classify my ECG time series** — train a time-series classifier and detect anomalies in the signal."
+**Example scenario.** A network researcher wants to classify routing changes over time:
+> "Use **aeon** to **classify my BGP time series** — train a time-series classifier and detect anomalies in the routing signal."
 
 ---
 
@@ -109,8 +109,8 @@ This category covers classical ML, deep learning, transformers, model interpreta
 
 **Use it when** you need a fast forecast for a univariate time series without building a custom forecasting model.
 
-**Example scenario.** A retailer wants to forecast next quarter's sales:
-> "Use **timesfm-forecasting** to **forecast my daily sales series** for the next 90 days — point forecasts with prediction intervals, no custom training."
+**Example scenario.** A network researcher wants to forecast route stability:
+> "Use **timesfm-forecasting** to **forecast my BGP announcement series** for the next 90 days — point forecasts with prediction intervals, no custom training."
 
 ---
 
@@ -120,8 +120,8 @@ This category covers classical ML, deep learning, transformers, model interpreta
 
 **Use it when** you want standard, well-documented RL. (For high-performance parallel training, multi-agent, or custom vectorized environments, use `pufferlib`.)
 
-**Example scenario.** A robotics team wants to train a control policy:
-> "Use **stable-baselines3** to train **PPO** on my Cartpole gym environment — quick prototyping with a standard, well-documented RL algorithm."
+**Example scenario.** A network team wants to train a route-selection policy:
+> "Use **stable-baselines3** to train **PPO** on my BGP route-selection environment — quick prototyping with a standard, well-documented RL algorithm."
 
 ---
 
@@ -132,6 +132,6 @@ This category covers classical ML, deep learning, transformers, model interpreta
 **Use it when** you need speed and scale — parallel training, multi-agent, or custom vectorized environments. (For quick prototyping, use `stable-baselines3`.)
 
 **Example scenario.** A research team wants to scale multi-agent RL:
-> "Use **pufferlib** to run **vectorized parallel training** for my multi-agent Atari experiment — targeting a 10x speedup over standard single-agent RL."
+> "Use **pufferlib** to run **vectorized parallel training** for my multi-agent interdomain-routing experiment — targeting a 10x speedup over standard single-agent RL."
 
 ---
