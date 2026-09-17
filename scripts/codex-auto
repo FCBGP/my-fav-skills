@@ -1,0 +1,235 @@
+#!/bin/sh
+
+# codex-auto
+#
+# 用法:
+#   codex-auto ~/2500/crc-fc-impl
+#   codex-auto ~/2500/crc-fc-impl -t TODO_P0.md
+#   codex-auto ~/2500/crc-fc-impl -n 50
+#   codex-auto ~/2500/crc-fc-impl --status
+#   codex-auto ~/2500/crc-fc-impl --dry
+#
+# Codex 权限由 ~/.codex/config.toml 管理。
+# 本脚本只负责 TODO 的循环推进。
+
+set -u
+
+DIR=""
+TODO="TODO.md"
+ROUNDS=100
+STALL_LIMIT=2
+SLEEP_S=3
+STATUS_ONLY=0
+DRY=0
+PROFILE=""
+
+usage() {
+    cat <<EOF
+用法:
+  codex-auto <项目路径> [选项]
+
+选项:
+  -t, --todo FILE       TODO 文件，默认 TODO.md
+  -n, --rounds N        最大轮数，默认 100
+  -s, --sleep SEC       每轮等待，默认 3 秒
+  --stall N             连续无变化多少轮后停止，默认 2
+  -p, --profile NAME    Codex profile
+  --status              只查看 TODO，不执行
+  --dry                 只显示将执行的操作
+  -h, --help            显示帮助
+
+示例:
+  codex-auto .
+  codex-auto ~/2500/crc-fc-impl
+  codex-auto . -t TODO_P0.md -n 50
+  codex-auto . --status
+EOF
+}
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -t|--todo)
+            TODO="$2"
+            shift 2
+            ;;
+        -n|--rounds)
+            ROUNDS="$2"
+            shift 2
+            ;;
+        -s|--sleep)
+            SLEEP_S="$2"
+            shift 2
+            ;;
+        --stall)
+            STALL_LIMIT="$2"
+            shift 2
+            ;;
+        -p|--profile)
+            PROFILE="$2"
+            shift 2
+            ;;
+        --status)
+            STATUS_ONLY=1
+            shift
+            ;;
+        --dry)
+            DRY=1
+            shift
+            ;;
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        -*)
+            echo "未知参数: $1" >&2
+            exit 1
+            ;;
+        *)
+            if [ -z "$DIR" ]; then
+                DIR="$1"
+            else
+                echo "多余参数: $1" >&2
+                exit 1
+            fi
+            shift
+            ;;
+    esac
+done
+
+[ -n "$DIR" ] || DIR="$PWD"
+
+[ -d "$DIR" ] || {
+    echo "❌ 目录不存在: $DIR" >&2
+    exit 1
+}
+
+cd "$DIR" || exit 1
+
+[ -f "$TODO" ] || {
+    echo "❌ 找不到 $TODO"
+    exit 1
+}
+
+pending() {
+    grep -cE '^[[:space:]]*[-*][[:space:]]+\[[[:space:]]\]' "$TODO" 2>/dev/null || true
+}
+
+show_pending() {
+    grep -nE '^[[:space:]]*[-*][[:space:]]+\[[[:space:]]\]' "$TODO" 2>/dev/null |
+        head -20
+}
+
+hash_file() {
+    if command -v md5sum >/dev/null 2>&1; then
+        md5sum "$1" | awk '{print $1}'
+    elif command -v md5 >/dev/null 2>&1; then
+        md5 -q "$1"
+    elif command -v shasum >/dev/null 2>&1; then
+        shasum "$1" | awk '{print $1}'
+    else
+        wc -c < "$1" | tr -d ' '
+    fi
+}
+
+mkdir -p logs
+
+if [ "$STATUS_ONLY" -eq 1 ]; then
+    echo "📋 $PWD/$TODO"
+    echo "未完成: $(pending) 项"
+    show_pending
+    exit 0
+fi
+
+echo "📁 工作目录: $PWD"
+echo "📋 TODO: $TODO"
+echo "🚀 未完成: $(pending) 项"
+echo "🔁 最大轮数: $ROUNDS"
+
+i=1
+stall=0
+
+while [ "$i" -le "$ROUNDS" ]; do
+
+    count=$(pending)
+
+    if [ "$count" -eq 0 ]; then
+        echo "✅ $TODO 已全部完成，共 $((i - 1)) 轮"
+        exit 0
+    fi
+
+    before=$(hash_file "$TODO")
+
+    echo
+    echo "───── 第 $i 轮 · 剩余 $count 项 ─────"
+
+    prompt=$(cat <<EOF
+Read ${TODO}.
+
+Execute EXACTLY ONE item:
+the first unchecked '- [ ]' entry, in listed priority order.
+
+Rules:
+- Finish this item completely.
+- Edit files, run checks, and verify the result.
+- Then update ${TODO} in place:
+  change this item from '- [ ]' to '- [x]'.
+- Add ONE indented line describing what was produced or verified.
+- Do NOT start a second item.
+- Do NOT ask me questions.
+- Do NOT provide next steps.
+- Do NOT provide a summary.
+- End your final response with exactly:
+DONE: <the item text>
+
+If the item is genuinely blocked:
+- change it to '- [~]';
+- record the blocker;
+- then execute the next unblocked item.
+EOF
+)
+
+    if [ "$DRY" -eq 1 ]; then
+        echo "[dry-run] codex exec -C \"$PWD\" ..."
+        echo "$prompt"
+        exit 0
+    fi
+
+    if [ -n "$PROFILE" ]; then
+        codex exec \
+            --profile "$PROFILE" \
+            -C "$PWD" \
+            -o "logs/round_${i}.md" \
+            "$prompt"
+    else
+        codex exec \
+            -C "$PWD" \
+            -o "logs/round_${i}.md" \
+            "$prompt"
+    fi
+
+    after=$(hash_file "$TODO")
+
+    if [ "$before" = "$after" ]; then
+        stall=$((stall + 1))
+        echo "⚠️ TODO 本轮没有变化 ($stall/$STALL_LIMIT)"
+
+        if [ "$stall" -ge "$STALL_LIMIT" ]; then
+            echo "🛑 连续 $STALL_LIMIT 轮没有进展，停止。"
+            echo "当前待办:"
+            show_pending | head -5
+            echo "最近日志: logs/round_${i}.md"
+            exit 1
+        fi
+    else
+        stall=0
+    fi
+
+    i=$((i + 1))
+
+    [ "$SLEEP_S" -gt 0 ] && sleep "$SLEEP_S"
+done
+
+echo "⏹ 已达到 $ROUNDS 轮上限"
+echo "剩余 $(pending) 项"
+
+exit 1

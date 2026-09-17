@@ -1,0 +1,17 @@
+#!/bin/sh
+
+FILE="${1:-TODO.md}"
+
+if [ -f "$FILE" ]; then
+    printf '%s\n' "已存在 $FILE，未覆盖"
+    exit 1
+fi
+
+cat > "$FILE" <<'TODOEOF'
+# TODO
+
+- [ ] P0:
+- [ ] P1:
+TODOEOF
+
+printf '%s\n' "已创建 $FILE"

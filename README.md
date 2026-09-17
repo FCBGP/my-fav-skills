@@ -10,6 +10,7 @@ A curated collection of **70** scientific and research skills for any AI agent t
 
 - [Why Use This?](#-why-use-this)
 - [Getting Started](#-getting-started)
+- [Helper Scripts](#helper-scripts)
 - [Prerequisites](#-prerequisites)
 - [Security Disclaimer](#%EF%B8%8F-security-disclaimer)
 - [Quick Examples](#-quick-examples)
@@ -83,16 +84,16 @@ git clone https://github.com/FCBGP/awsome-idr-skills.git .agents/skills/scientif
 
 **That's it.** Your agent discovers relevant skills automatically, and you can always invoke one by name in your prompt.
 
-### Option 4: Symlink with `link_skills.sh` (local checkout)
+### Option 4: Symlink with `scripts/link_skills.sh` (local checkout)
 
 If you already have this repository checked out (or cloned) and want the skills live under `~/.agents/skills` without duplicating files, use the included helper script:
 
 ```bash
 cd <repo-root>
-./link_skills.sh
+./scripts/link_skills.sh
 ```
 
-This symlinks **every directory under `skills/`** into `~/.agents/skills` (one link per skill), keeping a single source of truth. `~/.agents/skills` must already exist (Claude Code creates it). The script:
+This symlinks **every directory under `skills/`** into `~/.agents/skills` (one link per skill), keeping a single source of truth. The destination directory is created if it does not exist. The script:
 
 - Removes any existing non-symlink entry at the target path first, so it won't shadow the new link.
 - Reports each skill as it links and a final count.
@@ -100,16 +101,71 @@ This symlinks **every directory under `skills/`** into `~/.agents/skills` (one l
   - `-h` / `--help` — print usage information and a short intro, then exit.
   - `-d DIR` / `--dest DIR` — set the destination directory (defaults to `~/.agents/skills`).
 
-Examples:
-
 ```bash
-./link_skills.sh              # link into ~/.agents/skills (default)
-./link_skills.sh -h           # show help
-./link_skills.sh -d /tmp/sk   # link into /tmp/sk
-./link_skills.sh --dest /tmp/sk
+./scripts/link_skills.sh              # link into ~/.agents/skills (default)
+./scripts/link_skills.sh -h           # show help
+./scripts/link_skills.sh -d /tmp/sk   # link into /tmp/sk
+./scripts/link_skills.sh --dest /tmp/sk
 ```
 
-Re-run it anytime after pulling new skills to refresh the links.
+Re-run it anytime after pulling new skills to refresh the links. Recommended destination is `~/.agents/skills`, and you can manage the active skill set with **cc-switch**. See [Helper Scripts](#helper-scripts) for all three scripts shipped in `scripts/`.
+
+---
+
+## 🛠 Helper Scripts
+
+Three self-contained shell helpers live in `scripts/` and are maintained alongside this repo. They depend only on a POSIX shell and the codex CLI, so you can also copy them anywhere and run them directly.
+
+| Script | What it does |
+| ------ | ------------ |
+| `link_skills.sh` | Symlinks every skill directory under `skills/` into a destination directory (default `~/.agents/skills`). |
+| `codex-auto` | Loops `codex exec` over the unchecked items of a project's `TODO.md` until it is done. |
+| `codex-todo-init` | Generates a minimal `TODO.md` task list. |
+
+### `link_skills.sh` — install skills as symlinks
+
+Symlinks **each directory under `skills/`** into a destination directory, so your agent can discover the skills without duplicating files (a single source of truth). It creates the destination if needed, removes any non-symlink entry already at the target path first, then reports every link and a final count.
+
+**Recommended setup:** link into `~/.agents/skills` (the conventional agent-skills directory) and manage which skills are active with **cc-switch**. Re-run the script after `git pull` to refresh the links.
+
+```bash
+./scripts/link_skills.sh                # link into ~/.agents/skills (default)
+./scripts/link_skills.sh -h             # show help
+./scripts/link_skills.sh -d /tmp/sk     # link into a custom directory
+./scripts/link_skills.sh --dest /tmp/sk # same as -d
+```
+
+### `codex-auto` — loop through a project's TODO.md with Codex
+
+Repeatedly runs **Codex** against a project directory until its `TODO.md` task list is finished (or a round/stall limit is hit). It relies on the project containing:
+
+- **`AGENTS.md`** — the project's agent instructions, which tell Codex how to work in this repository.
+- **`TODO.md`** — the task list to work through (create one with [`codex-todo-init`](#codex-todo-init--scaffold-a-todomd)).
+
+Each round sends Codex a prompt that:
+1. Reads `TODO.md` and executes **exactly one** unchecked `- [ ]` item in listed priority order.
+2. Completes the item, runs checks, verifies the result, then marks it `- [x]` in place.
+3. Adds one indented line describing what was produced or verified.
+4. If the item is genuinely blocked, marks it `- [~]`, records the blocker, and moves to the next open item.
+
+`codex-auto` stops when all items are done, when the configured round limit is reached, or when the TODO file stops changing for N consecutive rounds. Each round is logged to `logs/round_<n>.md` inside the project directory. Codex permissions are managed by `~/.codex/config.toml`; the script only drives the TODO loop.
+
+```bash
+./scripts/codex-auto <project-dir>              # loop through TODO.md tasks (default 100 rounds)
+./scripts/codex-auto . -t TODO_P0.md -n 50      # custom TODO file, max 50 rounds
+./scripts/codex-auto ~/my/project --status       # only list remaining tasks, run nothing
+./scripts/codex-auto . --dry                     # preview the prompt without running codex
+./scripts/codex-auto . -p work -s 5             # use a Codex profile, wait 5s between rounds
+```
+
+### `codex-todo-init` — scaffold a TODO.md
+
+Generates a minimal `TODO.md` checklist (`- [ ] P0:` / `- [ ] P1:`) to bootstrap a Codex-driven workflow. It refuses to overwrite an existing file.
+
+```bash
+./scripts/codex-todo-init             # create TODO.md
+./scripts/codex-todo-init TODOS.md    # create a list in a custom file
+```
 
 ---
 
