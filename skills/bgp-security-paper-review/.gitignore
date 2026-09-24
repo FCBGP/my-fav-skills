@@ -1,0 +1,72 @@
+# ============================================================
+# bgp-security-paper-review — 只提交 skill 本体，其余一律不入库
+# ============================================================
+
+# AGENTS.md 是本地项目边界说明：仅工作区使用，不入库
+AGENTS.md
+
+# OS / 编辑器
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+*.bak
+*.orig
+
+# Python 缓存与虚拟环境（本 skill 无脚本；防误加）
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+env/
+
+# 被审论文原始文件（不应随 skill 分发）
+*.pdf
+*.doc
+*.docx
+*.ppt
+*.pptx
+*.key
+*.odt
+*.rtf
+*.tex
+
+# 审查产物与工作目录（每次审稿的输出，不入库）
+paper-review/
+reviews/
+review-output/
+reports/
+output/
+outputs/
+work/
+scratch/
+tmp/
+.tmp/
+
+# 图表 / 媒体
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.svg
+*.mp4
+*.mov
+figures/
+visuals/
+
+# 结构化数据样本（避免混入数据集）
+*.csv
+*.tsv
+*.xlsx
+*.xls
+*.jsonl
+*.db
+*.sqlite
+*.sqlite3
+
+# 日志
+*.log

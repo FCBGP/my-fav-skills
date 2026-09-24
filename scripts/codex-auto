@@ -1,235 +1,856 @@
-#!/bin/sh
-
-# codex-auto
+#!/usr/bin/env bash
 #
-# 用法:
-#   codex-auto ~/2500/crc-fc-impl
-#   codex-auto ~/2500/crc-fc-impl -t TODO_P0.md
-#   codex-auto ~/2500/crc-fc-impl -n 50
-#   codex-auto ~/2500/crc-fc-impl --status
-#   codex-auto ~/2500/crc-fc-impl --dry
+# codex-auto v2
 #
-# Codex 权限由 ~/.codex/config.toml 管理。
-# 本脚本只负责 TODO 的循环推进。
+# Verification-gated autonomous engineering loop for Codex.
+#
+# Usage:
+#   codex-auto .
+#   codex-auto . -t TODO.md -n 50
+#   codex-auto . --verify "make test"
+#   codex-auto . --status
+#   codex-auto . --dry
+#
+# State:
+#   .loop/state.json
+#   .loop/history.jsonl
+#   .loop/current.md
+#   logs/round_NNN.md
+#
+#
+# Minimal verification-gated autonomous engineering loop.
+#
+# TODO.md:
+#
+#   # TODO
+#
+#   - [ ] 实现 CRC PDU 编码
+#     - 验证：uv run pytest tests/test_crc_pdu.py
+#
+#   - [ ] 完成实验脚本
+#     - 验证：./scripts/verify.sh
+#
+# Usage:
+#   codex-auto .
+#   codex-auto . -n 100
+#   codex-auto . --verify "uv run pytest"
+#   codex-auto . --max-attempts 5
+#   codex-auto . --max-minutes 180
+#   codex-auto . --dry
+#   codex-auto . --status
+#
 
 set -u
 
+# ============================================================
+# Configuration
+# ============================================================
+
 DIR=""
 TODO="TODO.md"
+
 ROUNDS=100
-STALL_LIMIT=2
 SLEEP_S=3
-STATUS_ONLY=0
-DRY=0
+
+VERIFY_CMD=""
+
+MAX_TASK_ATTEMPTS=5
+MAX_MINUTES=0
+
 PROFILE=""
 
+STATUS_ONLY=0
+DRY=0
+
+START_TIME=0
+
+LOG_DIR="logs"
+LOCK_FILE=".codex-auto.lock"
+
+# ============================================================
+# Usage
+# ============================================================
+
 usage() {
-    cat <<EOF
+    cat <<'USAGE'
 用法:
   codex-auto <项目路径> [选项]
 
 选项:
-  -t, --todo FILE       TODO 文件，默认 TODO.md
-  -n, --rounds N        最大轮数，默认 100
-  -s, --sleep SEC       每轮等待，默认 3 秒
-  --stall N             连续无变化多少轮后停止，默认 2
-  -p, --profile NAME    Codex profile
-  --status              只查看 TODO，不执行
-  --dry                 只显示将执行的操作
-  -h, --help            显示帮助
+  -t, --todo FILE          TODO 文件，默认 TODO.md
+  -n, --rounds N           最大轮数，默认 100
+  -s, --sleep SEC          每轮等待，默认 3 秒
+  --verify CMD             全局验证命令
+  --max-attempts N         单任务最大失败次数，默认 5
+  --max-minutes N          最大运行时间，0 表示不限
+  -p, --profile NAME       Codex profile
+  --status                 查看当前 TODO 状态
+  --dry                    只显示第一项任务，不执行
+  -h, --help               显示帮助
 
 示例:
+
   codex-auto .
-  codex-auto ~/2500/crc-fc-impl
-  codex-auto . -t TODO_P0.md -n 50
+
+  codex-auto . -n 100
+
+  codex-auto . \
+      --verify "uv run pytest"
+
+  codex-auto . \
+      --verify "./scripts/verify.sh" \
+      --max-attempts 5 \
+      --max-minutes 180
+
+  codex-auto . --dry
+
   codex-auto . --status
-EOF
+USAGE
 }
+
+# ============================================================
+# Argument parsing
+# ============================================================
 
 while [ $# -gt 0 ]; do
     case "$1" in
+
         -t|--todo)
+            if [ $# -lt 2 ]; then
+                echo "❌ $1 需要参数" >&2
+                exit 1
+            fi
             TODO="$2"
             shift 2
             ;;
+
         -n|--rounds)
+            if [ $# -lt 2 ]; then
+                echo "❌ $1 需要参数" >&2
+                exit 1
+            fi
             ROUNDS="$2"
             shift 2
             ;;
+
         -s|--sleep)
+            if [ $# -lt 2 ]; then
+                echo "❌ $1 需要参数" >&2
+                exit 1
+            fi
             SLEEP_S="$2"
             shift 2
             ;;
-        --stall)
-            STALL_LIMIT="$2"
+
+        --verify)
+            if [ $# -lt 2 ]; then
+                echo "❌ $1 需要参数" >&2
+                exit 1
+            fi
+            VERIFY_CMD="$2"
             shift 2
             ;;
+
+        --max-attempts)
+            if [ $# -lt 2 ]; then
+                echo "❌ $1 需要参数" >&2
+                exit 1
+            fi
+            MAX_TASK_ATTEMPTS="$2"
+            shift 2
+            ;;
+
+        --max-minutes)
+            if [ $# -lt 2 ]; then
+                echo "❌ $1 需要参数" >&2
+                exit 1
+            fi
+            MAX_MINUTES="$2"
+            shift 2
+            ;;
+
         -p|--profile)
+            if [ $# -lt 2 ]; then
+                echo "❌ $1 需要参数" >&2
+                exit 1
+            fi
             PROFILE="$2"
             shift 2
             ;;
+
         --status)
             STATUS_ONLY=1
             shift
             ;;
+
         --dry)
             DRY=1
             shift
             ;;
+
         -h|--help)
             usage
             exit 0
             ;;
+
         -*)
-            echo "未知参数: $1" >&2
+            echo "❌ 未知参数: $1" >&2
             exit 1
             ;;
+
         *)
             if [ -z "$DIR" ]; then
                 DIR="$1"
             else
-                echo "多余参数: $1" >&2
+                echo "❌ 多余参数: $1" >&2
                 exit 1
             fi
             shift
             ;;
+
     esac
 done
 
-[ -n "$DIR" ] || DIR="$PWD"
+# ============================================================
+# Project directory
+# ============================================================
 
-[ -d "$DIR" ] || {
+if [ -z "$DIR" ]; then
+    DIR="$PWD"
+fi
+
+if [ ! -d "$DIR" ]; then
     echo "❌ 目录不存在: $DIR" >&2
     exit 1
-}
+fi
 
 cd "$DIR" || exit 1
 
-[ -f "$TODO" ] || {
-    echo "❌ 找不到 $TODO"
+# ============================================================
+# Basic validation
+# ============================================================
+
+if [ ! -f "$TODO" ]; then
+    echo "❌ 找不到 TODO 文件: $TODO" >&2
     exit 1
+fi
+
+if ! command -v codex >/dev/null 2>&1; then
+    echo "❌ 找不到 codex" >&2
+    exit 1
+fi
+
+case "$ROUNDS" in
+    ''|*[!0-9]*)
+        echo "❌ --rounds 必须是整数" >&2
+        exit 1
+        ;;
+esac
+
+case "$MAX_TASK_ATTEMPTS" in
+    ''|*[!0-9]*)
+        echo "❌ --max-attempts 必须是整数" >&2
+        exit 1
+        ;;
+esac
+
+case "$MAX_MINUTES" in
+    ''|*[!0-9]*)
+        echo "❌ --max-minutes 必须是整数" >&2
+        exit 1
+        ;;
+esac
+
+mkdir -p "$LOG_DIR"
+
+# ============================================================
+# Lock
+# ============================================================
+
+if [ -f "$LOCK_FILE" ]; then
+    echo "❌ 已有 codex-auto 正在运行"
+    echo "   lock: $PWD/$LOCK_FILE"
+    echo
+    echo "如果确认没有其他实例运行:"
+    echo "   rm -f \"$LOCK_FILE\""
+    exit 1
+fi
+
+echo "$$" > "$LOCK_FILE"
+
+cleanup() {
+    rm -f "$LOCK_FILE"
 }
 
-pending() {
-    grep -cE '^[[:space:]]*[-*][[:space:]]+\[[[:space:]]\]' "$TODO" 2>/dev/null || true
+trap cleanup EXIT INT TERM
+
+# ============================================================
+# Helpers
+# ============================================================
+
+pending_count() {
+    grep -cE '^[[:space:]]*[-*][[:space:]]+\[[[:space:]]\]' \
+        "$TODO" 2>/dev/null || true
+}
+
+first_pending() {
+    grep -m1 -E '^[[:space:]]*[-*][[:space:]]+\[[[:space:]]\]' \
+        "$TODO" 2>/dev/null || true
 }
 
 show_pending() {
-    grep -nE '^[[:space:]]*[-*][[:space:]]+\[[[:space:]]\]' "$TODO" 2>/dev/null |
-        head -20
+    grep -nE '^[[:space:]]*[-*][[:space:]]+\[[[:space:]]\]' \
+        "$TODO" 2>/dev/null || true
 }
 
-hash_file() {
-    if command -v md5sum >/dev/null 2>&1; then
-        md5sum "$1" | awk '{print $1}'
-    elif command -v md5 >/dev/null 2>&1; then
-        md5 -q "$1"
-    elif command -v shasum >/dev/null 2>&1; then
-        shasum "$1" | awk '{print $1}'
-    else
-        wc -c < "$1" | tr -d ' '
+elapsed_minutes() {
+    if [ "$START_TIME" -eq 0 ]; then
+        echo 0
+        return
     fi
+
+    local now
+    now=$(date +%s)
+
+    echo $(( (now - START_TIME) / 60 ))
 }
 
-mkdir -p logs
+# ============================================================
+# Status
+# ============================================================
 
 if [ "$STATUS_ONLY" -eq 1 ]; then
-    echo "📋 $PWD/$TODO"
-    echo "未完成: $(pending) 项"
+
+    echo "📁 工作目录: $PWD"
+    echo "📋 TODO: $TODO"
+    echo "🚀 未完成: $(pending_count) 项"
+
+    echo
+    echo "待办:"
     show_pending
+
     exit 0
 fi
 
+# ============================================================
+# Startup
+# ============================================================
+
+START_TIME=$(date +%s)
+
 echo "📁 工作目录: $PWD"
 echo "📋 TODO: $TODO"
-echo "🚀 未完成: $(pending) 项"
+echo "🚀 未完成: $(pending_count) 项"
 echo "🔁 最大轮数: $ROUNDS"
 
+if [ -n "$VERIFY_CMD" ]; then
+    echo "🧪 验证命令: $VERIFY_CMD"
+else
+    echo "🧪 验证命令: 未设置"
+fi
+
+echo "🧱 单任务最大失败次数: $MAX_TASK_ATTEMPTS"
+echo "📝 日志目录: $LOG_DIR"
+
+if [ "$MAX_MINUTES" -gt 0 ]; then
+    echo "⏱️ 最大运行时间: ${MAX_MINUTES} 分钟"
+fi
+
+# ============================================================
+# Dry run
+# ============================================================
+
+if [ "$DRY" -eq 1 ]; then
+
+    task=$(first_pending)
+
+    if [ -z "$task" ]; then
+        echo
+        echo "✅ 没有未完成任务"
+        exit 0
+    fi
+
+    echo
+    echo "🎯 第一项任务:"
+    echo "   $task"
+
+    exit 0
+fi
+
+# ============================================================
+# Main loop
+# ============================================================
+
 i=1
-stall=0
+current_task=""
+task_attempts=0
 
 while [ "$i" -le "$ROUNDS" ]; do
 
-    count=$(pending)
+    # --------------------------------------------------------
+    # Completion
+    # --------------------------------------------------------
+
+    count=$(pending_count)
 
     if [ "$count" -eq 0 ]; then
-        echo "✅ $TODO 已全部完成，共 $((i - 1)) 轮"
+
+        echo
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        echo "🎉 所有 TODO 已完成"
+        echo "🔁 共运行 $((i - 1)) 轮"
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
         exit 0
     fi
 
-    before=$(hash_file "$TODO")
+    # --------------------------------------------------------
+    # Timeout
+    # --------------------------------------------------------
+
+    if [ "$MAX_MINUTES" -gt 0 ]; then
+
+        elapsed=$(elapsed_minutes)
+
+        if [ "$elapsed" -ge "$MAX_MINUTES" ]; then
+
+            echo
+            echo "⏱️ 达到最大运行时间: ${MAX_MINUTES} 分钟"
+            echo "📌 当前任务: $current_task"
+
+            exit 2
+        fi
+    fi
+
+    # --------------------------------------------------------
+    # Select task
+    # --------------------------------------------------------
+
+    task=$(first_pending)
+
+    if [ "$task" != "$current_task" ]; then
+        current_task="$task"
+        task_attempts=0
+    fi
+
+    task_attempts=$((task_attempts + 1))
+
+    # --------------------------------------------------------
+    # Display
+    # --------------------------------------------------------
 
     echo
-    echo "───── 第 $i 轮 · 剩余 $count 项 ─────"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo "🔁 第 $i/$ROUNDS 轮"
+    echo "📌 剩余任务: $count"
+    echo "🎯 当前任务:"
+    echo "   $task"
+    echo "🔢 尝试次数: $task_attempts/$MAX_TASK_ATTEMPTS"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+    # --------------------------------------------------------
+    # Log file
+    # --------------------------------------------------------
+
+    log_file=$(printf "%s/round_%03d.log" "$LOG_DIR" "$i")
+
+    {
+        echo "============================================================"
+        echo "Codex Auto Round $i"
+        echo "============================================================"
+        echo
+        echo "Date:"
+        date
+        echo
+        echo "Directory:"
+        echo "$PWD"
+        echo
+        echo "Task:"
+        echo "$task"
+        echo
+        echo "Attempt:"
+        echo "$task_attempts/$MAX_TASK_ATTEMPTS"
+        echo
+        echo "============================================================"
+        echo "Codex Output"
+        echo "============================================================"
+        echo
+    } > "$log_file"
+
+    # --------------------------------------------------------
+    # Prompt
+    # --------------------------------------------------------
 
     prompt=$(cat <<EOF
-Read ${TODO}.
+You are a worker inside an autonomous engineering loop.
 
-Execute EXACTLY ONE item:
-the first unchecked '- [ ]' entry, in listed priority order.
+Project directory:
+$PWD
 
-Rules:
-- Finish this item completely.
-- Edit files, run checks, and verify the result.
-- Then update ${TODO} in place:
-  change this item from '- [ ]' to '- [x]'.
-- Add ONE indented line describing what was produced or verified.
-- Do NOT start a second item.
-- Do NOT ask me questions.
-- Do NOT provide next steps.
-- Do NOT provide a summary.
-- End your final response with exactly:
-DONE: <the item text>
+Task file:
+$TODO
 
-If the item is genuinely blocked:
-- change it to '- [~]';
-- record the blocker;
-- then execute the next unblocked item.
+Current task:
+$task
+
+============================================================
+WORKING RULES
+============================================================
+
+1. Read AGENTS.md if it exists.
+
+2. Read the complete TODO.md.
+
+3. Inspect the existing implementation before changing anything.
+
+4. Work ONLY on the current TODO item.
+
+5. Do NOT start another TODO item.
+
+6. Implement the current task completely.
+
+7. Run relevant tests, builds, checks, experiments, or
+   validation.
+
+8. Fix failures directly related to this task.
+
+9. Inspect the final git diff.
+
+10. Do NOT modify the TODO checkbox.
+
+11. NEVER change:
+       - [ ]
+    into:
+       - [x]
+
+12. The outer codex-auto process owns task completion.
+
+13. Do not claim completion merely because the implementation
+    looks correct.
+
+14. Do not modify unrelated files.
+
+15. Preserve existing behavior unless the task explicitly
+    requires a change.
+
+16. If the task is blocked, investigate it and make as much
+    useful progress as possible.
+
+17. Do not wait for human confirmation. Make reasonable
+    engineering decisions yourself.
+
+============================================================
+TODO FORMAT
+============================================================
+
+The TODO normally looks like:
+
+- [ ] task description
+  - 验证：verification condition
+
+The verification condition is part of the task specification.
+
+If a specific verification command is available, run it.
+
+============================================================
+IMPORTANT
+============================================================
+
+You are NOT the task completion authority.
+
+The outer loop will decide whether the task is complete.
+
+NEVER mark the TODO item as [x].
+
+NEVER rewrite the TODO merely to indicate progress.
+
+============================================================
+FINAL CHECK
+============================================================
+
+Before finishing:
+
+1. Inspect git diff.
+2. Run the most relevant available verification.
+3. Leave the repository coherent.
+4. Clearly report:
+   - what you changed
+   - what you verified
+   - any remaining problem
+
+Now execute the current task.
 EOF
 )
 
-    if [ "$DRY" -eq 1 ]; then
-        echo "[dry-run] codex exec -C \"$PWD\" ..."
+    {
+        echo "============================================================"
+        echo "Prompt"
+        echo "============================================================"
+        echo
         echo "$prompt"
-        exit 0
-    fi
+        echo
+        echo "============================================================"
+        echo "Codex Output"
+        echo "============================================================"
+        echo
+    } >> "$log_file"
+
+    # --------------------------------------------------------
+    # Codex
+    #
+    # IMPORTANT:
+    #   stdout/stderr -> tee
+    #
+    # This means:
+    #   1. terminal sees output immediately
+    #   2. log receives the same output
+    #
+    # PIPESTATUS[0] captures Codex's real exit code.
+    # --------------------------------------------------------
+
+    echo "🤖 启动 Codex..."
 
     if [ -n "$PROFILE" ]; then
+
         codex exec \
             --profile "$PROFILE" \
             -C "$PWD" \
-            -o "logs/round_${i}.md" \
-            "$prompt"
+            "$prompt" \
+            2>&1 | tee -a "$log_file"
+
+        codex_exit=${PIPESTATUS[0]}
+
     else
+
         codex exec \
             -C "$PWD" \
-            -o "logs/round_${i}.md" \
-            "$prompt"
+            "$prompt" \
+            2>&1 | tee -a "$log_file"
+
+        codex_exit=${PIPESTATUS[0]}
+
     fi
 
-    after=$(hash_file "$TODO")
+    {
+        echo
+        echo "============================================================"
+        echo "Codex Exit Code"
+        echo "============================================================"
+        echo
+        echo "$codex_exit"
+        echo
+    } >> "$log_file"
 
-    if [ "$before" = "$after" ]; then
-        stall=$((stall + 1))
-        echo "⚠️ TODO 本轮没有变化 ($stall/$STALL_LIMIT)"
+    echo
+    echo "🤖 Codex exit: $codex_exit"
 
-        if [ "$stall" -ge "$STALL_LIMIT" ]; then
-            echo "🛑 连续 $STALL_LIMIT 轮没有进展，停止。"
-            echo "当前待办:"
-            show_pending | head -5
-            echo "最近日志: logs/round_${i}.md"
-            exit 1
+    # --------------------------------------------------------
+    # Codex failed
+    # --------------------------------------------------------
+
+    if [ "$codex_exit" -ne 0 ]; then
+
+        echo "❌ Codex 执行失败"
+        echo "   日志: $log_file"
+
+        if [ "$task_attempts" -ge "$MAX_TASK_ATTEMPTS" ]; then
+
+            echo
+            echo "🛑 当前任务连续失败 $task_attempts 次"
+            echo "📌 任务:"
+            echo "   $task"
+            echo
+            echo "停止 Loop。"
+
+            exit 3
         fi
-    else
-        stall=0
+
+        echo "🔄 下一轮重新执行同一任务"
+
+        i=$((i + 1))
+
+        if [ "$SLEEP_S" -gt 0 ]; then
+            sleep "$SLEEP_S"
+        fi
+
+        continue
     fi
+
+    # --------------------------------------------------------
+    # Verification
+    # --------------------------------------------------------
+
+    if [ -n "$VERIFY_CMD" ]; then
+
+        echo
+        echo "🧪 执行验证:"
+        echo "   $VERIFY_CMD"
+        echo
+
+        {
+            echo
+            echo "============================================================"
+            echo "Verification"
+            echo "============================================================"
+            echo
+            echo "\$ $VERIFY_CMD"
+            echo
+        } >> "$log_file"
+
+        bash -lc "$VERIFY_CMD" 2>&1 | tee -a "$log_file"
+
+        verify_exit=${PIPESTATUS[0]}
+
+        {
+            echo
+            echo "Verification Exit Code:"
+            echo "$verify_exit"
+            echo
+        } >> "$log_file"
+
+        echo
+        echo "🧪 验证 exit: $verify_exit"
+
+    else
+
+        echo
+        echo "⚠️ 未设置 --verify"
+        echo "   本轮不会自动标记 TODO 完成。"
+        echo "   下一轮将继续执行当前任务。"
+
+        {
+            echo
+            echo "============================================================"
+            echo "Verification"
+            echo "============================================================"
+            echo
+            echo "NO VERIFY COMMAND"
+            echo
+        } >> "$log_file"
+
+        verify_exit=2
+    fi
+
+    # --------------------------------------------------------
+    # Verification passed
+    # --------------------------------------------------------
+
+    if [ "$verify_exit" -eq 0 ]; then
+
+        echo
+        echo "✅ 验证通过"
+
+        # ----------------------------------------------------
+        # Mark the exact current task [x].
+        #
+        # Python is used because it is available on both
+        # macOS and Ubuntu and avoids fragile sed differences.
+        # ----------------------------------------------------
+
+        python3 - "$TODO" "$task" <<'PY'
+import sys
+
+path = sys.argv[1]
+task = sys.argv[2]
+
+with open(path, "r", encoding="utf-8") as f:
+    lines = f.readlines()
+
+found = False
+
+for i, line in enumerate(lines):
+    if line.rstrip("\n") == task:
+        if "[ ]" not in line:
+            print("ERROR: current task is no longer unchecked",
+                  file=sys.stderr)
+            sys.exit(1)
+
+        lines[i] = line.replace("[ ]", "[x]", 1)
+        found = True
+        break
+
+if not found:
+    print("ERROR: current task disappeared from TODO",
+          file=sys.stderr)
+    sys.exit(1)
+
+with open(path, "w", encoding="utf-8") as f:
+    f.writelines(lines)
+PY
+
+        mark_exit=$?
+
+        if [ "$mark_exit" -ne 0 ]; then
+
+            echo "❌ TODO 更新失败"
+            echo "   日志: $log_file"
+
+            exit 4
+        fi
+
+        {
+            echo
+            echo "============================================================"
+            echo "Task Accepted"
+            echo "============================================================"
+            echo
+            echo "Verification passed."
+            echo "TODO item marked [x]."
+        } >> "$log_file"
+
+        echo "☑️ 已完成:"
+        echo "   $task"
+
+        current_task=""
+        task_attempts=0
+
+    else
+
+        # ----------------------------------------------------
+        # Verification failed
+        # ----------------------------------------------------
+
+        echo
+        echo "❌ 验证失败"
+
+        if [ "$task_attempts" -ge "$MAX_TASK_ATTEMPTS" ]; then
+
+            echo
+            echo "🛑 当前任务达到最大失败次数"
+            echo "📌 任务:"
+            echo "   $task"
+            echo "🔢 次数: $task_attempts/$MAX_TASK_ATTEMPTS"
+            echo "📝 日志: $log_file"
+            echo
+            echo "停止 Loop。"
+
+            exit 3
+        fi
+
+        echo "🔄 下一轮继续执行同一任务"
+    fi
+
+    # --------------------------------------------------------
+    # Next round
+    # --------------------------------------------------------
 
     i=$((i + 1))
 
-    [ "$SLEEP_S" -gt 0 ] && sleep "$SLEEP_S"
+    if [ "$SLEEP_S" -gt 0 ]; then
+        sleep "$SLEEP_S"
+    fi
+
 done
 
-echo "⏹ 已达到 $ROUNDS 轮上限"
-echo "剩余 $(pending) 项"
+# ============================================================
+# Max iterations
+# ============================================================
 
-exit 1
+echo
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "⏹ 达到最大轮数: $ROUNDS"
+echo "📌 剩余任务: $(pending_count)"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+exit 5
+EOF
