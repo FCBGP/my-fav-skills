@@ -4,8 +4,14 @@
 #
 # Verification-gated autonomous engineering loop for Codex.
 #
+# Behavior:
+#   - With --verify CMD : run CMD after each Codex run; the TODO item
+#     is accepted only when CMD exits 0.
+#   - Without --verify : a successful Codex run is accepted directly
+#     and the TODO item is automatically marked [x].
+#
 # Usage:
-#   codex-auto .
+#   codex-auto .                     # auto-execute TODO.md
 #   codex-auto . -t TODO.md -n 50
 #   codex-auto . --verify "make test"
 #   codex-auto . --status
@@ -18,8 +24,6 @@
 #   logs/round_NNN.md
 #
 #
-# Minimal verification-gated autonomous engineering loop.
-#
 # TODO.md:
 #
 #   # TODO
@@ -30,8 +34,14 @@
 #   - [ ] 完成实验脚本
 #     - 验证：./scripts/verify.sh
 #
+# AUTO mode (no --verify): the TODO item is accepted when Codex
+# finishes the task successfully.
+#
+# VERIFY mode (--verify CMD): the TODO item is accepted only when
+# CMD exits 0; failed attempts are retried up to --max-attempts.
+#
 # Usage:
-#   codex-auto .
+#   codex-auto .                     # auto-execute TODO.md
 #   codex-auto . -n 100
 #   codex-auto . --verify "uv run pytest"
 #   codex-auto . --max-attempts 5
@@ -76,6 +86,12 @@ usage() {
 用法:
   codex-auto <项目路径> [选项]
 
+模式:
+  自动模式 (默认)         不指定 --verify，Codex 完成任务后直接
+                          标记 TODO 为 [x]，自动执行整个 TODO.md
+  验证模式               指定 --verify，执行后运行验证命令，
+                          验证通过才标记 TODO 为 [x]
+
 选项:
   -t, --todo FILE          TODO 文件，默认 TODO.md
   -n, --rounds N           最大轮数，默认 100
@@ -90,12 +106,11 @@ usage() {
 
 示例:
 
+  # 自动执行 TODO.md（Codex 完成后自动打勾）
   codex-auto .
 
-  codex-auto . -n 100
-
-  codex-auto . \
-      --verify "uv run pytest"
+  # 验证模式：通过测试才打勾
+  codex-auto . --verify "uv run pytest"
 
   codex-auto . \
       --verify "./scripts/verify.sh" \
@@ -346,7 +361,7 @@ echo "🔁 最大轮数: $ROUNDS"
 if [ -n "$VERIFY_CMD" ]; then
     echo "🧪 验证命令: $VERIFY_CMD"
 else
-    echo "🧪 验证命令: 未设置"
+    echo "🧪 验证命令: 未设置（Codex 完成后直接接受任务）"
 fi
 
 echo "🧱 单任务最大失败次数: $MAX_TASK_ATTEMPTS"
@@ -713,10 +728,18 @@ EOF
 
     else
 
+        # ----------------------------------------------------
+        # No verification command was provided.
+        #
+        # The outer loop treats a successful Codex run as
+        # completion: the task is accepted directly and the
+        # TODO item is marked [x]. Run with --verify when an
+        # explicit check is required before accepting.
+        # ----------------------------------------------------
+
         echo
-        echo "⚠️ 未设置 --verify"
-        echo "   本轮不会自动标记 TODO 完成。"
-        echo "   下一轮将继续执行当前任务。"
+        echo "✅ 未设置 --verify，直接接受当前任务"
+        echo "   （不执行外部验证，Codex 完成后自动标记 TODO 完成）"
 
         {
             echo
@@ -724,11 +747,11 @@ EOF
             echo "Verification"
             echo "============================================================"
             echo
-            echo "NO VERIFY COMMAND"
+            echo "NO VERIFY COMMAND - auto accept"
             echo
         } >> "$log_file"
 
-        verify_exit=2
+        verify_exit=0
     fi
 
     # --------------------------------------------------------
